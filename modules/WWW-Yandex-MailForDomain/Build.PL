@@ -7,6 +7,9 @@ my $builder = Module::Build->new(
     license             => 'perl',
     dist_author         => q{Oleg Alistratov <ali@ali.org.ua>},
     dist_version_from   => 'lib/WWW/Yandex/MailForDomain.pm',
+    resources           => {
+        repository => 'http://github.com/alien/ali-public/tree/master/modules/WWW-Yandex-MailForDomain/',
+    },
     build_requires => {
         'Test::More' => 0,
         'LWP::UserAgent' => 0,
