@@ -22,7 +22,9 @@ BEGIN
 # ------------------------------------------------------------------------------
 sub main
 {
-    plan(tests => 3);
+    plan(tests => 4);
+
+    is(chr(65), 'A', "Is ASCII platform");
 
     my $warn_thrown = 0;
     local $SIG{__WARN__} = sub {
