@@ -152,7 +152,6 @@ sub password_entropy($)
 
     return $entropy;
 }
-# ------------------------------------------------------------------------------
 # ==============================================================================
 1;
 __END__
@@ -164,58 +163,85 @@ Data::Password::Entropy - Calculate password strength
 =head1 SYNOPSIS
 
     use Data::Password::Entropy;
-    print "Entropy is ", password_entropy("pass123"), " bits.\n";
+
+    print "Entropy is ", password_entropy("pass123"), " bits.";   # prints 31
+
+    if (password_entropy("mypass") < password_entropy("Ha20&09_X!t")) {
+        print "mypass is weaker. It is unexpectedly, isn't it?";
+    }
 
 
 =head1 DESCRIPTION
 
-Entropy, also known as password quality or password strength, is a measure
-of a password in resisting guessing and brute-force attacks.
-[...]
+Information entropy, also known as I<password quality> or I<password strength>
+when used in a discussion of the information security, is a measure of
+a password in resisting brute-force attacks.
 
-We use a very simple, empirical algorithm to find a password entropy.
-All characters from string splits into several classes, such as numbers,
-lower- or upper-case letters and so on. Probability [...]
-
-C<'abcd'> is weaker than C<'adbc'>
-
-C<'a' x 100> insignificantly stronger than C<'a' x 4>
-
-
-Do not expect too much: an algorithm does not check password weakness
-with dictionary lookup.
-
-The character classes based on the ASCII encoding. If you have something else,
-e.g. EBCDIC, you can try something like the L<Convert::EBCDIC> module.
-
-=head1 FUNCTIONS
-
-There is only one function in this package and it is exported by default.
+There are a lot of different ways to determine a password's entropy. We use
+a simple, empirical algorithm: first, all characters from string splitted into
+several classes, such as numbers, lower- or upper-case letters and so on.
+Any characters from one class have equal probability of being in password.
+Mixing of characters from different classes extends the number of possible
+symbols (symbols base) in password and thereby increases its entropy. Then,
+we calculate the I<effective length> of password to ensure the next rules:
 
 =over
 
-=item C<password_entropy($str)>
+=item * some orderliness decreases total entropy,
+so C<'1234'> is weaker password than C<'1342'>,
 
-Returns an entropy of C<$str>, calulating in bits.
+=item * repeating sequences decrease total entropy,
+so C<'a' x 100> insignificantly stronger than C<'a' x 4> (it may seem, that's too insignificantly).
 
-Argument is treated as a byte-string, not a wide-character string,
-so any characters with codes higher than 127 [...]
+=back
 
-Note: one possible way to process wide characters underlies in determining
-character's Unicode script or Unicode block, and use them capacity as base for
-calculating [...]
+Do not expect too much: an algorithm does not check password weakness with
+dictionary lookup (see L<Data::Password>). Also it can not detect obfuscation
+like C<'p@ssw0rd'>, sequences from a keyboard row or personally related information.
+
+Probability of characters occuring depends on capacity of character class only.
+Perhaps, it should be to take into account a prevalence of symbol class actually --
+it is very unlikely to find a control character in password. But common password
+policies don't allow control characters, spaces or extended characters in passwords,
+therefore, so they should not occur in practice.
+
+Similarly, there is no well-defined approach to process national characters.
+For example, the Greek letters block in Unicode Character Database contains
+about 400 symbols, but not all of them have equivalent frequency of usage.
+An intruder, who knows that password may contain Greek letters, will not probe
+the E<0x03b1> (Greek letter Alpha) with the same probability as
+the E<0x1f06> (Greek small letter Alpha with psili and perispomeni), therefore
+it might be incorrect to consider a whole UCD block or script as a base for
+calculating probabilities.
+
+So, data are treated as a bytes string, not a wide-character string,
+and all characters with codes higher than 127 form one class.
+
+The character classes based on the ASCII encoding. If you have something else,
+e.g. EBCDIC, you can try something like the L<Encode> or L<Convert::EBCDIC> modules.
+
+
+=head1 FUNCTIONS
+
+There's only one function in this package and it is exported by default.
+
+=over
+
+=item C<password_entropy($data)>
+
+Returns an entropy of C<$data>, calculating in bits.
 
 =back
 
 
 =head1 SEE ALSO
 
-L<Data::Password::Manager>, L<Data::Password>, L<Data::Password::BasicCheck>.
+L<Data::Password>, L<Data::Password::Manager>, L<Data::Password::BasicCheck>.
 
 L<http://en.wikipedia.org/wiki/Password_strength>
 
-A Conceptual Framework for Assessing Password Quality, PDF
-L<http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.98.3266&rep=rep1&type=pdf>
+"A Conceptual Framework for Assessing Password Quality" by Wanli Ma, John Campbell, Dat Tran, and Dale Kleeman [PDF]
+L<http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.98.3266&amp;rep=rep1&amp;type=pdf>
 
 =head1 COPYRIGHT
 
