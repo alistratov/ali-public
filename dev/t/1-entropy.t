@@ -40,15 +40,11 @@ sub main
         'g9Hi;4z/X+%nHx?5__v"=fa4"8Tzs>nW:4\'<GE)Qc"}U$@2WN=JQ!G,[7ryVS-3p' => 354,
     );
 
-    plan(tests => 22);
-
-    print "[]-", password_entropy(undef), "\n";
+    plan(tests => 2 + 1 + scalar(keys(%pass)));
 
     for my $k (sort(keys(%pass))) {
-        print "$k\t", password_entropy($k), "\n";
+        is(password_entropy($k), $pass{$k}, "Password \"$k\"");
     }
-
-    #is(password_entropy('pass123'),	0, 'Test 1');
 }
 # ----------------------------------------------------------------------
 1;

@@ -8,7 +8,7 @@ use warnings;
 use Encode;
 use POSIX qw(ceil);
 
-our $VERSION = '0.1';
+our $VERSION = '0.01';
 
 # ==============================================================================
 
@@ -22,12 +22,12 @@ sub password_entropy($)
 {
     my ($passw) = @_;
 
-    # Convert to octets
-    $passw = Encode::encode_utf8($passw);
-
     my $entropy = 0;
 
     if (defined($passw) && $passw ne '') {
+
+        # Convert to octets
+        $passw = Encode::encode_utf8($passw);
 
         my $base = {
             lower           => 0,
@@ -42,7 +42,7 @@ sub password_entropy($)
 
         my $effective_len = 0.0;
         my $char_counts = +{};
-        my $differences = +{};
+        my $diff = +{};
 
         my $prev_nc = 0;
 
@@ -75,27 +75,27 @@ sub password_entropy($)
                 $base->{special_ext} = 1;
             }
 
-            my $diff_factor = 1.0;
+            my $diff_fact = 1.0;
 
             if ($i > 0) {
-                my $diff = $nc - $prev_nc;
+                my $d = $nc - $prev_nc;
 
-                if (exists($differences->{$diff})) {
-                    $differences->{$diff}++;
-                    $diff_factor /= $differences->{$diff};
+                if (exists($diff->{$d})) {
+                    $diff->{$d}++;
+                    $diff_fact /= $diff->{$d};
                 }
                 else {
-                    $differences->{$diff} = 1;
+                    $diff->{$d} = 1;
                 }
             }
 
             if (exists($char_counts->{$c})) {
                 $char_counts->{$c}++;
-                $effective_len += $diff_factor * (1.0 / $char_counts->{$c});
+                $effective_len += $diff_fact * (1.0 / $char_counts->{$c});
             }
             else {
                 $char_counts->{$c} = 1;
-                $effective_len += $diff_factor;
+                $effective_len += $diff_fact;
             }
 
             $prev_nc = $nc;
@@ -124,13 +124,62 @@ __END__
 
 =head1 NAME
 
-C<Data::Password::Entropy> -
+Data::Password::Entropy - Calculate password strength
 
-http://en.wikipedia.org/wiki/Password_strength
+=head1 SYNOPSIS
+
+    use Data::Password::Entropy;
+    print "Entropy is ", password_entropy("pass123"), " bits.\n";
 
 
-=head1 SEEL ALSO
+=head1 DESCRIPTION
 
-L<Data::Password::Manager>
+Entropy, also known as password quality or password strength, is a measure
+of a password in resisting guessing and brute-force attacks
+[...]
+
+We use a very simple, empirical algorithm to find a password entropy.
+All symbols from string splits into several classes, such as numbers, lower- or
+upper-case letters and so on. Probability
+
+Be careful: an algorithm does not check password weakness with dictionary lookup.
+
+=head1 FUNCTIONS
+
+There is only one function in this package and it is exported by default.
+
+=over
+
+=item C<password_entropy($str)>
+
+Returns an entropy of C<$str>, calulating in bits.
+
+Argument is treated as a byte-string, not a wide-character string,
+so any characters with codes higher than 127 [...]
+
+Note: one possible way to process wide characters underlies in determining
+character's Unicode script or Unicode block, and use them capacity as base for
+calculating [...]
+
+=back
+
+
+=head1 SEE ALSO
+
+L<Data::Password::Manager>, L<Data::Password>, L<Data::Password::BasicCheck>.
+
+L<http://en.wikipedia.org/wiki/Password_strength>
+
+=head1 COPYRIGHT
+
+Copyright (c) 2010 Oleg Alistratov. All rights reserved.
+
+This program is free software; you can redistribute it and/or modify it
+under the same terms as Perl itself.
+
+
+=head1 AUTHOR
+
+Oleg Alistratov <zero@cpan.org>
 
 =cut
