@@ -167,7 +167,7 @@ Data::Password::Entropy - Calculate password strength
     print "Entropy is ", password_entropy("pass123"), " bits.";   # prints 31
 
     if (password_entropy("mypass") < password_entropy("Ha20&09_X!t")) {
-        print "mypass is weaker. It is unexpectedly, isn't it?";
+        print "mypass is weaker. It is unexpectedly, isn't it? :)";
     }
 
 
