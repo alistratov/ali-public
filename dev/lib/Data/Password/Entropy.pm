@@ -144,16 +144,9 @@ sub password_entropy($)
             $pci += $CHAR_CAPACITY{$_};
         }
 
-        print "PS: $passw\n";
-        print "TL: $len\n";
-        print "EL: $eff_len\n";
-
         if ($pci != 0) {
             my $bits_per_char = log($pci) / log(2.0);
-            print "Bt: $bits_per_char\n";
-            print "BL: ", $bits_per_char * $eff_len, "\n";
             $entropy = floor($bits_per_char * $eff_len);
-            print "EN: $entropy\n";
         }
 
         print "\n";
