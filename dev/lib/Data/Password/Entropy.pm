@@ -148,8 +148,6 @@ sub password_entropy($)
             my $bits_per_char = log($pci) / log(2.0);
             $entropy = floor($bits_per_char * $eff_len);
         }
-
-        print "\n";
     }
 
     return $entropy;
