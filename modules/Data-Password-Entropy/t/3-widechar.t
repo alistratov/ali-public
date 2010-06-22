@@ -13,16 +13,13 @@ use Test::More;
 use FindBin qw($Bin);
 use lib ("$Bin/../lib");
 
-BEGIN
-{
-    use_ok('Data::Password::Entropy');
-}
+use Data::Password::Entropy;
 
 &main();
 # ------------------------------------------------------------------------------
 sub main
 {
-    plan(tests => 4);
+    plan(tests => 3);
 
     is(chr(65), 'A', "Is ASCII platform");
 

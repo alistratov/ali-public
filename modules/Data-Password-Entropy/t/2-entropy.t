@@ -12,10 +12,7 @@ use Test::More;
 use FindBin qw($Bin);
 use lib ("$Bin/../lib");
 
-BEGIN
-{
-    use_ok('Data::Password::Entropy');
-}
+use Data::Password::Entropy;
 
 &main();
 # ------------------------------------------------------------------------------
@@ -38,7 +35,7 @@ sub main
         'g9Hi;4z/X+%nHx?5__v"=fa4"8Tzs>nW:4\'<GE)Qc"}U$@2WN=JQ!G,[7ryVS-3p' => 353,
     );
 
-    plan(tests => 1 + scalar(keys(%pass)));
+    plan(tests => scalar(keys(%pass)));
 
     for my $k (sort(keys(%pass))) {
         is(password_entropy($k), $pass{$k}, "Password \"$k\"");

@@ -7,7 +7,7 @@
 use strict;
 use warnings;
 
-use Test::More;
+use Test::More tests => 3;
 
 use FindBin qw($Bin);
 use lib ("$Bin/../lib");
@@ -22,8 +22,6 @@ BEGIN
 # ------------------------------------------------------------------------------
 sub main
 {
-    plan(3);
-
     is(password_entropy(undef),	0, 'Undefined value');
 }
 # ------------------------------------------------------------------------------
