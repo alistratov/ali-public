@@ -6,9 +6,9 @@ use strict;
 use warnings;
 
 use Encode;
-use POSIX qw(ceil);
+use POSIX qw(floor);
 
-our $VERSION = '0.01';
+our $VERSION = '0.03';
 
 # ==============================================================================
 
@@ -17,6 +17,75 @@ use base qw(Exporter);
 our @EXPORT = qw(
     password_entropy
 );
+# ==============================================================================
+use constant {
+    CONTROL         => 0,
+    NUMBER          => 1,
+    UPPER           => 2,
+    LOWER           => 3,
+    PUNCT_1         => 4,
+    PUNCT_2         => 5,
+    EXTENDED        => 6,
+};
+
+my @CHAR_CLASSES;
+my %CHAR_CAPACITY;
+
+BEGIN
+{
+    for my $i (0..255) {
+        my $cclass = 0;
+
+        if ($i < 32) {
+            $cclass = CONTROL;
+        }
+        elsif ($i >= ord('0') && $i <= ord('9')) {
+            $cclass = NUMBER;
+        }
+        elsif ($i >= ord('A') && $i <= ord('Z')) {
+            $cclass = UPPER;
+        }
+        elsif ($i >= ord('a') && $i <= ord('z')) {
+            $cclass = LOWER;
+        }
+        elsif ($i > 127) {
+            $cclass = EXTENDED;
+        }
+        elsif (
+            # Simple punctuation marks, which can be typed with first row of keyboard or numpad
+            $i == 32 ||          # space
+            $i == ord('!') ||    # 33
+            $i == ord('@') ||    # 64
+            $i == ord('#') ||    # 35
+            $i == ord('$') ||    # 36
+            $i == ord('%') ||    # 37
+            $i == ord('^') ||    # 94
+            $i == ord('&') ||    # 38
+            $i == ord('*') ||    # 42
+            $i == ord('(') ||    # 40
+            $i == ord(')') ||    # 41
+            $i == ord('_') ||    # 95
+            $i == ord('+') ||    # 43
+            $i == ord('-') ||    # 45
+            $i == ord('=') ||    # 61
+            $i == ord('/')       # 47
+        ) {
+            $cclass = PUNCT_1;
+        }
+        else {
+            # Other punctuation marks
+            $cclass = PUNCT_2;
+        }
+
+        $CHAR_CLASSES[$i] = $cclass;
+        if (!$CHAR_CAPACITY{$cclass}) {
+            $CHAR_CAPACITY{$cclass} = 1;
+        }
+        else {
+            $CHAR_CAPACITY{$cclass}++;
+        }
+    }
+}
 # ==============================================================================
 sub password_entropy($)
 {
@@ -29,95 +98,70 @@ sub password_entropy($)
         # Convert to octets
         $passw = Encode::encode_utf8($passw);
 
-        my $base = {
-            lower           => 0,
-            upper           => 0,
-            number          => 0,
-            special_simple  => 0,
-            special_ext     => 0,
-            escape          => 0,
-            high            => 0,
-        };
-        my $base_high = +{};
+        my $classes = +{};
 
-        my $effective_len = 0.0;
-        my $char_counts = +{};
-        my $diff = +{};
+        my $eff_len = 0.0;      # the effective length
+        my $char_count = +{};   # to count characters quantities
+        my $distances = +{};    # to collect differences between adjacent characters
+
+        my $len = length($passw);
 
         my $prev_nc = 0;
 
-        my @chars = split(//, $passw);
-        my $len = scalar(@chars);
-
         for (my $i = 0; $i < $len; $i++) {
-            my $c = $chars[$i];
+            my $c = substr($passw, $i, 1);
             my $nc = ord($c);
+            $classes->{$CHAR_CLASSES[$nc]} = 1;
 
-            if ($nc < ord(' ')) {
-                $base->{escape} = 1;
-            }
-            elsif ($nc >= ord('A') && $nc <= ord('Z')) {
-                $base->{upper} = 1;
-            }
-            elsif ($nc >= ord('a') && $nc <= ord('z')) {
-                $base->{lower} = 1;
-            }
-            elsif ($nc >= ord('0') && $nc <= ord('9')) {
-                $base->{number} = 1;
-            }
-            elsif ($nc >= ord(' ') && $nc <= ord('/')) {
-                $base->{special_simple} = 1;
-            }
-            elsif ($nc > 127) { # > DEL, was ord('~')
-                $base->{high} = 1;
-            }
-            else {
-                $base->{special_ext} = 1;
-            }
-
-            my $diff_fact = 1.0;
+            my $incr = 1.0;     # value/factor for increment effective length
 
             if ($i > 0) {
                 my $d = $nc - $prev_nc;
 
-                if (exists($diff->{$d})) {
-                    $diff->{$d}++;
-                    $diff_fact /= $diff->{$d};
+                if (exists($distances->{$d})) {
+                    $distances->{$d}++;
+                    $incr /= $distances->{$d};
                 }
                 else {
-                    $diff->{$d} = 1;
+                    $distances->{$d} = 1;
                 }
             }
 
-            if (exists($char_counts->{$c})) {
-                $char_counts->{$c}++;
-                $effective_len += $diff_fact * (1.0 / $char_counts->{$c});
+            if (exists($char_count->{$c})) {
+                $char_count->{$c}++;
+                $eff_len += $incr * (1.0 / $char_count->{$c});
             }
             else {
-                $char_counts->{$c} = 1;
-                $effective_len += $diff_fact;
+                $char_count->{$c} = 1;
+                $eff_len += $incr;
             }
 
             $prev_nc = $nc;
-
-            my $char_space = 0;
-            $char_space +=  32 if ($base->{escape});
-            $char_space +=  26 if ($base->{upper});
-            $char_space +=  26 if ($base->{lower});
-            $char_space +=  10 if ($base->{number});
-            $char_space +=  16 if ($base->{special_simple});
-            $char_space +=  18 if ($base->{special_ext});
-            $char_space += 128 if ($base->{high});
-
-            if ($char_space != 0) {
-                my $bits_per_char = log($char_space) / log(2.0);
-                $entropy = ceil($bits_per_char * $effective_len);
-            }
         }
+
+        my $pci = 0;            # Password complexity index
+        for (keys(%$classes)) {
+            $pci += $CHAR_CAPACITY{$_};
+        }
+
+        print "PS: $passw\n";
+        print "TL: $len\n";
+        print "EL: $eff_len\n";
+
+        if ($pci != 0) {
+            my $bits_per_char = log($pci) / log(2.0);
+            print "Bt: $bits_per_char\n";
+            print "BL: ", $bits_per_char * $eff_len, "\n";
+            $entropy = floor($bits_per_char * $eff_len);
+            print "EN: $entropy\n";
+        }
+
+        print "\n";
     }
 
     return $entropy;
 }
+# ------------------------------------------------------------------------------
 # ==============================================================================
 1;
 __END__
@@ -135,14 +179,23 @@ Data::Password::Entropy - Calculate password strength
 =head1 DESCRIPTION
 
 Entropy, also known as password quality or password strength, is a measure
-of a password in resisting guessing and brute-force attacks
+of a password in resisting guessing and brute-force attacks.
 [...]
 
 We use a very simple, empirical algorithm to find a password entropy.
-All symbols from string splits into several classes, such as numbers, lower- or
-upper-case letters and so on. Probability
+All characters from string splits into several classes, such as numbers,
+lower- or upper-case letters and so on. Probability [...]
 
-Be careful: an algorithm does not check password weakness with dictionary lookup.
+C<'abcd'> is weaker than C<'adbc'>
+
+C<'a' x 100> insignificantly stronger than C<'a' x 4>
+
+
+Do not expect too much: an algorithm does not check password weakness
+with dictionary lookup.
+
+The character classes based on the ASCII encoding. If you have something else,
+e.g. EBCDIC, you can try something like the L<Convert::EBCDIC> module.
 
 =head1 FUNCTIONS
 
@@ -169,6 +222,9 @@ calculating [...]
 L<Data::Password::Manager>, L<Data::Password>, L<Data::Password::BasicCheck>.
 
 L<http://en.wikipedia.org/wiki/Password_strength>
+
+A Conceptual Framework for Assessing Password Quality, PDF
+L<http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.98.3266&rep=rep1&type=pdf>
 
 =head1 COPYRIGHT
 
