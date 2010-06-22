@@ -6,6 +6,7 @@ lib/Data/Password/Entropy.pm
 t/1-use.t
 t/2-entropy.t
 t/3-widechar.t
-t/manifest.t
 t/pod-coverage.t
 t/pod.t
+Makefile.PL
+META.yml
