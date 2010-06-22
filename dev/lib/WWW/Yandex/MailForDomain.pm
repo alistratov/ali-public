@@ -1061,6 +1061,6 @@ under the same terms as Perl itself.
 
 =head1 AUTHOR
 
-Oleg Alistratov <ali@ali.org.ua>
+Oleg Alistratov <zero@cpan.org>
 
 =cut
