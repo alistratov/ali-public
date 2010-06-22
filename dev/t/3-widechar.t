@@ -25,7 +25,7 @@ sub main
     plan(tests => 3);
 
     my $warn_thrown = 0;
-    $SIG{__WARN__} = sub {
+    local $SIG{__WARN__} = sub {
         my $msg = shift;
         if ($msg =~ /wide/ || $msg =~ /uninitialized/) {
             $warn_thrown = 1;
