@@ -241,7 +241,7 @@ L<Data::Password>, L<Data::Password::Manager>, L<Data::Password::BasicCheck>.
 L<http://en.wikipedia.org/wiki/Password_strength>
 
 "A Conceptual Framework for Assessing Password Quality" by Wanli Ma, John Campbell, Dat Tran, and Dale Kleeman [PDF]
-L<http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.98.3266&amp;rep=rep1&amp;type=pdf>
+L<http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.98.3266&rep=rep1&type=pdf>
 
 =head1 COPYRIGHT
 
