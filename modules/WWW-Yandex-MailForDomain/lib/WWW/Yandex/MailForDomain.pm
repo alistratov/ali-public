@@ -680,7 +680,7 @@ __END__
 
 =head1 NAME
 
-WWW::Yandex::MailForDomain - Yandex Mail for Domain API.
+WWW::Yandex::MailForDomain - Yandex Mail for Domain API
 
 =head1 SYNOPSIS
 
