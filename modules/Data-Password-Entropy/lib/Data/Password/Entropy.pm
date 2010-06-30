@@ -8,7 +8,7 @@ use warnings;
 use Encode;
 use POSIX qw(floor);
 
-our $VERSION = '0.03';
+our $VERSION = '0.04';
 
 # ==============================================================================
 
@@ -167,7 +167,7 @@ Data::Password::Entropy - Calculate password strength
     print "Entropy is ", password_entropy("pass123"), " bits.";   # prints 31
 
     if (password_entropy("mypass") < password_entropy("Ha20&09_X!t")) {
-        print "mypass is weaker. It is unexpectedly, isn't it? :)";
+        print "mypass is weaker. It is unexpectedly, isn't it?";
     }
 
 
@@ -200,7 +200,7 @@ dictionary lookup (see L<Data::Password>). Also it can not detect obfuscation
 like C<'p@ssw0rd'>, sequences from a keyboard row or personally related information.
 
 Probability of characters occuring depends on capacity of character class only.
-Perhaps, it should be to take into account a prevalence of symbol class actually --
+Perhaps, it should be to take into account a prevalence of symbol class actually E<mdash>
 it is very unlikely to find a control character in password. But common password
 policies don't allow control characters, spaces or extended characters in passwords,
 therefore, so they should not occur in practice.
@@ -247,9 +247,12 @@ L<http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.98.3266&rep=rep1&type
 
 Copyright (c) 2010 Oleg Alistratov. All rights reserved.
 
-This program is free software; you can redistribute it and/or modify it
-under the same terms as Perl itself.
+This module is free software.  You can redistribute it and/or
+modify it under the terms of the Artistic License 2.0.
 
+This program is distributed in the hope that it will be useful,
+but without any warranty; without even the implied warranty of
+merchantability or fitness for a particular purpose.
 
 =head1 AUTHOR
 

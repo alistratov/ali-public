@@ -1,4 +1,8 @@
 Revision history for Data-Password-Entropy
 
+0.04    2010-06-30
+        Licensed under Artistic License 2.0.
+        Minor changes in POD.
+
 0.03    2010-06-22
         Initial public revision.

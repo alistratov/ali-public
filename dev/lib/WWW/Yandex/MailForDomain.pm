@@ -5,7 +5,7 @@ use strict;
 use warnings;
 use utf8;
 
-our $VERSION = '0.1';
+our $VERSION = '0.2';
 
 use LWP::UserAgent;
 use URI::Escape;
@@ -682,7 +682,7 @@ __END__
 
 =head1 NAME
 
-WWW::Yandex::MailForDomain - Yandex Mail for Domain API.
+WWW::Yandex::MailForDomain - Yandex Mail for Domain API
 
 =head1 SYNOPSIS
 
@@ -1044,6 +1044,7 @@ On the other hand, if a number of mailboxes is a large, C<get_users()> method
 may return a wrong number of items too.
 
 I hope, the paging of retrieving mailboxes process will be fixed.
+A bug report has been sended to Yandex.
 
 
 =head1 SEE ALSO
@@ -1055,8 +1056,12 @@ Yandex Mail for Domain API Reference (in Russian): L<http://pdd.yandex.ru/help/s
 
 Copyright (c) 2010 Oleg Alistratov. All rights reserved.
 
-This program is free software; you can redistribute it and/or modify it
-under the same terms as Perl itself.
+This module is free software.  You can redistribute it and/or
+modify it under the terms of the Artistic License 2.0.
+
+This program is distributed in the hope that it will be useful,
+but without any warranty; without even the implied warranty of
+merchantability or fitness for a particular purpose.
 
 
 =head1 AUTHOR
