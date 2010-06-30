@@ -1,7 +1,7 @@
 ---
-abstract: 'Yandex Mail for Domain API.'
+abstract: 'Yandex Mail for Domain API'
 author:
-  - 'Oleg Alistratov <ali@ali.org.ua>'
+  - 'Oleg Alistratov <zero@cpan.org>'
 build_requires:
   LWP::UserAgent: 0
   Test::More: 0
@@ -18,7 +18,7 @@ name: WWW-Yandex-MailForDomain
 provides:
   WWW::Yandex::MailForDomain:
     file: lib/WWW/Yandex/MailForDomain.pm
-    version: 0.1
+    version: 0.2
 resources:
   license: http://dev.perl.org/licenses/
-version: 0.1
+version: 0.2
