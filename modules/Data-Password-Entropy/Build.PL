@@ -4,7 +4,7 @@ use Module::Build;
 
 my $builder = Module::Build->new(
     module_name         => 'Data::Password::Entropy',
-    license             => 'perl',
+    license             => 'artistic_2',
     dist_author         => q{Oleg Alistratov <zero@cpan.org>},
     dist_version_from   => 'lib/Data/Password/Entropy.pm',
     resources           => {
