@@ -178,12 +178,12 @@ when used in a discussion of the information security, is a measure of
 a password in resisting brute-force attacks.
 
 There are a lot of different ways to determine a password's entropy. We use
-a simple, empirical algorithm: first, all characters from string splitted into
+a simple, empirical algorithm: first, all characters from the string splitted to
 several classes, such as numbers, lower- or upper-case letters and so on.
-Any characters from one class have equal probability of being in password.
-Mixing of characters from different classes extends the number of possible
-symbols (symbols base) in password and thereby increases its entropy. Then,
-we calculate the I<effective length> of password to ensure the next rules:
+Any characters from one class have equal probability of being in the password.
+Mix of the characters from the different classes extends the number of possible
+symbols (symbols base) in the password and thereby increases its entropy. Then,
+we calculate the I<effective length> of the password to ensure the next rules:
 
 =over
 
@@ -195,13 +195,13 @@ so C<'a' x 100> insignificantly stronger than C<'a' x 4> (it may seem, that's to
 
 =back
 
-Do not expect too much: an algorithm does not check password weakness with
+Do not expect too much: an algorithm does not check the password's weakness with
 dictionary lookup (see L<Data::Password>). Also it can not detect obfuscation
 like C<'p@ssw0rd'>, sequences from a keyboard row or personally related information.
 
-Probability of characters occuring depends on capacity of character class only.
-Perhaps, it should be to take into account a prevalence of symbol class actually E<mdash>
-it is very unlikely to find a control character in password. But common password
+Probability of characters occurring depends on the capacity of character class only.
+Perhaps, it should be taken into account a prevalence of symbol class actually E<mdash>
+it is very unlikely to find a control character in the password. But common password
 policies don't allow control characters, spaces or extended characters in passwords,
 therefore, so they should not occur in practice.
 
