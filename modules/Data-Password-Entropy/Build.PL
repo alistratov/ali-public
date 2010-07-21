@@ -7,8 +7,10 @@ my $builder = Module::Build->new(
     license             => 'artistic_2',
     dist_author         => q{Oleg Alistratov <zero@cpan.org>},
     dist_version_from   => 'lib/Data/Password/Entropy.pm',
-    resources           => {
-        repository => 'http://github.com/alien/ali-public/tree/master/modules/Data-Password-Entropy/',
+    meta_merge          => {
+        resources           => {
+            repository => 'http://github.com/alien/ali-public/tree/master/modules/Data-Password-Entropy/',
+        },
     },
     build_requires => {
         'Test::More' => 0,

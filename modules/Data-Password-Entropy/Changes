@@ -1,5 +1,8 @@
 Revision history for Data-Password-Entropy
 
+0.06    2010-07-21
+        Spell-checking of POD, thanks to Natalie Balabanova http://www.tatusia.com/
+
 0.04    2010-06-30
         Licensed under Artistic License 2.0.
         Minor changes in POD.
