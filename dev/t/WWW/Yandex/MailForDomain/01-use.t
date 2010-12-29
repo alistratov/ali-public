@@ -7,24 +7,18 @@
 use strict;
 use warnings;
 
-use Test::More;
+use Test::More tests => 1;
 
-use FindBin qw($Bin);
-use lib ("$Bin/../lib");
+use FindBin;
+use lib "$FindBin::Bin/../../../../lib";
 
-BEGIN
-{
-    use_ok('Data::Password::Entropy');
-    isa_ok('Data::Password::Entropy', 'Exporter');
-}
+use_ok('WWW::Yandex::MailForDomain');
 
 &main();
 # ------------------------------------------------------------------------------
 sub main
 {
-    plan(3);
-
-    is(password_entropy(undef),	0, 'Undefined value');
+    # Nothing to do. Requires live tesing.
 }
 # ------------------------------------------------------------------------------
 1;

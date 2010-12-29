@@ -8,22 +8,17 @@ use strict;
 use warnings;
 use utf8;
 
-use Test::More;
+use Test::More tests => 3;
 
-use FindBin qw($Bin);
-use lib ("$Bin/../lib");
+use FindBin;
+use lib "$FindBin::Bin/../../../../lib";
 
-BEGIN
-{
-    use_ok('Data::Password::Entropy');
-}
+use Data::Password::Entropy;
 
 &main();
 # ------------------------------------------------------------------------------
 sub main
 {
-    plan(tests => 4);
-
     is(chr(65), 'A', "Is ASCII platform");
 
     my $warn_thrown = 0;
