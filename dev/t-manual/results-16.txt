@@ -1,0 +1,164 @@
+[12:44:42] ali@bravo.ali.org.ua:~% perlbrew exec perl ./digests-2.pl
+perl-5.10.1
+==========
+          Rate   SHA   MD5   Con   Rev
+SHA   489956/s    --  -71%  -95%  -96%
+MD5  1672241/s  241%    --  -82%  -86%
+Con  9174312/s 1772%  449%    --  -26%
+Rev 12345679/s 2420%  638%   35%    --
+
+
+perl-5.12.4
+==========
+          Rate   SHA   MD5   Con   Rev
+SHA   475059/s    --  -71%  -94%  -95%
+MD5  1612903/s  240%    --  -81%  -84%
+Con  8474576/s 1684%  425%    --  -15%
+Rev 10000000/s 2005%  520%   18%    --
+
+
+perl-5.14.2
+==========
+         Rate   SHA   MD5   Rev   Con
+SHA  464684/s    --  -73%  -94%  -94%
+MD5 1751313/s  277%    --  -78%  -79%
+Rev 7812500/s 1581%  346%    --   -5%
+Con 8264463/s 1679%  372%    6%    --
+
+
+[12:49:53] ali@bravo.ali.org.ua:~% perlbrew exec perl ./digests-2.pl
+perl-5.10.1
+==========
+         Rate   SHA   MD5   Con   Rev
+SHA  470588/s    --  -72%  -95%  -95%
+MD5 1655629/s  252%    --  -82%  -83%
+Con 9009009/s 1814%  444%    --   -8%
+Rev 9803922/s 1983%  492%    9%    --
+
+
+perl-5.12.4
+==========
+          Rate   SHA   MD5   Con   Rev
+SHA   475737/s    --  -70%  -95%  -95%
+MD5  1587302/s  234%    --  -83%  -84%
+Con  9259259/s 1846%  483%    --   -7%
+Rev 10000000/s 2002%  530%    8%    --
+
+
+perl-5.14.2
+==========
+         Rate   SHA   MD5   Con   Rev
+SHA  467727/s    --  -74%  -94%  -95%
+MD5 1798561/s  285%    --  -77%  -81%
+Con 7692308/s 1545%  328%    --  -18%
+Rev 9345794/s 1898%  420%   21%    --
+
+
+[20:44:31] ali@srv2:~% ./digests-2.pl
+         Rate   SHA   MD5   Con   Rev
+SHA  466200/s    --  -72%  -94%  -94%
+MD5 1666667/s  258%    --  -77%  -78%
+Con 7194245/s 1443%  332%    --   -7%
+Rev 7751938/s 1563%  365%    8%    --
+[20:45:44] ali@srv2:~% ./digests-2.pl
+          Rate   SHA   MD5   Rev   Con
+SHA   460829/s    --  -74%  -93%  -96%
+MD5  1742160/s  278%    --  -74%  -84%
+Rev  6802721/s 1376%  290%    --  -37%
+Con 10752688/s 2233%  517%   58%    --
+[20:54:03] ali@srv2:~% ./digests-2.pl
+         Rate   SHA   MD5   Con   Rev
+SHA  473261/s    --  -73%  -92%  -94%
+MD5 1776199/s  275%    --  -69%  -78%
+Con 5747126/s 1114%  224%    --  -30%
+Rev 8196721/s 1632%  361%   43%    --
+[21:00:28] ali@srv2:~% ./digests-2.pl
+         Rate   SHA   MD5   Rev   Con
+SHA  470588/s    --  -74%  -94%  -95%
+MD5 1798561/s  282%    --  -78%  -80%
+Rev 8333333/s 1671%  363%    --   -7%
+Con 8928571/s 1797%  396%    7%    --
+
+F:\home3\ali-public\modules\Crypt-Combined-Digest\t-manual>perl digests-2.pl
+          Rate   SHA   MD5   Rev   Con
+SHA   409484/s    --  -64%  -96%  -96%
+MD5  1153137/s  182%    --  -88%  -89%
+Rev 10000000/s 2342%  767%    --   -6%
+Con 10672359/s 2506%  826%    7%    --
+
+F:\home3\ali-public\modules\Crypt-Combined-Digest\t-manual>perl digests-2.pl
+          Rate   SHA   MD5   Rev   Con
+SHA   410256/s    --  -65%  -96%  -96%
+MD5  1185255/s  189%    --  -89%  -90%
+Rev 11037528/s 2590%  831%    --   -3%
+Con 11428571/s 2686%  864%    4%    --
+
+F:\home3\ali-public\modules\Crypt-Combined-Digest\t-manual>perl digests-2.pl
+          Rate   SHA   MD5   Rev   Con
+SHA   412626/s    --  -64%  -96%  -97%
+MD5  1153137/s  179%    --  -90%  -91%
+Rev 11037528/s 2575%  857%    --  -10%
+Con 12315271/s 2885%  968%   12%    --
+
+F:\home3\ali-public\modules\Crypt-Combined-Digest\t-manual>perl digests-2.pl
+          Rate   SHA   MD5   Rev   Con
+SHA   411573/s    --  -65%  -96%  -96%
+MD5  1163738/s  183%    --  -89%  -89%
+Rev 10845987/s 2535%  832%    --   -0%
+Con 10845987/s 2535%  832%    0%    --
+
+[12:58:15] ali@bravo.ali.org.ua:~% perlbrew exec perl ./digests-2.pl
+perl-5.10.1
+==========
+         Rate   SHA   MD5   Rev   Con
+SHA  483793/s    --  -73%  -94%  -95%
+MD5 1821494/s  277%    --  -77%  -80%
+Rev 7812500/s 1515%  329%    --  -15%
+Con 9174312/s 1796%  404%   17%    --
+
+
+perl-5.12.4
+==========
+          Rate   SHA   MD5   Rev   Con
+SHA   456413/s    --  -71%  -96%  -96%
+MD5  1597444/s  250%    --  -85%  -86%
+Rev 10869565/s 2282%  580%    --   -2%
+Con 11111111/s 2334%  596%    2%    --
+
+
+perl-5.14.2
+==========
+         Rate   SHA   MD5   Con   Rev
+SHA  475964/s    --  -72%  -94%  -95%
+MD5 1694915/s  256%    --  -77%  -82%
+Con 7352941/s 1445%  334%    --  -24%
+Rev 9615385/s 1920%  467%   31%    --
+
+
+[13:04:39] ali@bravo.ali.org.ua:~% perlbrew exec perl ./digests-2.pl
+perl-5.10.1
+==========
+         Rate   SHA   MD5   Rev   Con
+SHA  488043/s    --  -71%  -94%  -95%
+MD5 1697793/s  248%    --  -79%  -83%
+Rev 8130081/s 1566%  379%    --  -17%
+Con 9803922/s 1909%  477%   21%    --
+
+
+perl-5.12.4
+==========
+          Rate   SHA   MD5   Con   Rev
+SHA   478469/s    --  -73%  -95%  -96%
+MD5  1745201/s  265%    --  -82%  -84%
+Con  9523810/s 1890%  446%    --  -15%
+Rev 11235955/s 2248%  544%   18%    --
+
+
+perl-5.14.2
+==========
+         Rate   SHA   MD5   Con   Rev
+SHA  464468/s    --  -71%  -93%  -95%
+MD5 1615509/s  248%    --  -76%  -82%
+Con 6711409/s 1345%  315%    --  -26%
+Rev 9090909/s 1857%  463%   35%    --
+
