@@ -8,6 +8,11 @@ use warnings;
 
 Crypt::Combined::Digest - The great new Crypt::Combined::Digest!
 
+http://habrahabr.ru/blogs/infosecurity/130965/
+
+http://habrahabr.ru/blogs/crypto/100301/
+
+
 =head1 VERSION
 
 Version 0.01
@@ -15,11 +20,12 @@ Version 0.01
 =cut
 
 
-use Data::Dumper;
+#use Data::Dumper;
 
 use Digest::MD5 qw(md5);
 use Digest::SHA qw(sha1);
 use MIME::Base64 ();
+use Encode qw(encode_utf8);
 
 our $VERSION = '0.01';
 
@@ -38,7 +44,6 @@ my $ALLOWED_SYMBOLS = {};
 {
     my $i = 0;
     $ALLOWED_SYMBOLS->{$_} = $i++ for ('0' .. '9', 'a' .. 'z', 'A' .. 'Z', '_', '-');
-    #print Dumper($ALLOWED_SYMBOLS);
 }
 
 # ==============================================================================
@@ -74,10 +79,10 @@ sub new($)
 
     for my $op (@actions) {
 
-        $res = $op->[1] ? "$arg . \$salt" : "\$salt . $arg";
+        $res = $op->[1] ? "$arg.\$salt" : "\$salt.$arg";
 
         if ($op->[2]) {
-            $res = "scalar reverse($res)" ;            # or ~~reverse
+            $res = "scalar reverse($res)";      # or ~~reverse
             $cplx_reverse++;
         }
 
@@ -93,48 +98,31 @@ sub new($)
         $arg = $res;
     }
 
-    $self->{description} = $res;
+    $self->{code} = $res;
     $self->{size} = $actions[$#actions]->[0] ? LENGTH_SHA1 : LENGTH_MD5;
 
     # Slowness, in comparison with single md5()
-    $self->{slowness} =
+    $self->{slowness} = sprintf(
+        '%.1f',
         $cplx_md5       * COMPLEXITY_MD5 +
         $cplx_sha1      * COMPLEXITY_SHA1 +
         $cplx_concat    * COMPLEXITY_CONCAT +
-        $cplx_reverse   * COMPLEXITY_REVERSE;
+        $cplx_reverse   * COMPLEXITY_REVERSE
+    );
 
     # Compile
-    my $code = "sub { my (\$data, \$salt) = \@_; return $self->{description}; }";
-    $self->{compiled} = eval qq{ $code };
+    my $fullcode = "sub { my (\$data, \$salt) = \@_; return $self->{code}; }";
+    $self->{compiled} = eval qq{ $fullcode };
 
     $self = bless $self, ref($class) || $class;
     return $self;
 }
-
 # ------------------------------------------------------------------------------
 #
-sub alg()
-{
-    return shift->{alg};
-}
-# ------------------------------------------------------------------------------
-#
-sub size()
-{
-    return shift->{size};
-}
-# ------------------------------------------------------------------------------
-#
-sub description()
-{
-    return shift->{description};
-}
-# ------------------------------------------------------------------------------
-#
-sub slowness()
-{
-    return shift->{slowness};
-}
+sub alg()           { shift->{alg} }
+sub size()          { shift->{size} }
+sub code()          { shift->{code} }
+sub slowness()      { shift->{slowness} }
 # ------------------------------------------------------------------------------
 #
 sub hash($;$)
@@ -144,7 +132,7 @@ sub hash($;$)
     $salt = '' unless defined $salt;
 
     my $coderef = $self->{compiled};
-    return $coderef->($data, $salt);
+    return $coderef->(encode_utf8($data), encode_utf8($salt));
 }
 # ------------------------------------------------------------------------------
 #
@@ -157,16 +145,17 @@ sub digest($;$)
 sub hexdigest($;$)
 {
     my ($self, $data, $salt) = @_;
-    my $bin = $self->hash($data, $salt);
-    return unpack('H*', $bin);
+    return unpack('H*', $self->hash($data, $salt));
 }
 # ------------------------------------------------------------------------------
 #
 sub b64digest($;$)
 {
     my ($self, $data, $salt) = @_;
-    my $bin = $self->hash($data, $salt);
-    return MIME::Base64::encode($bin);
+    my $b64 = MIME::Base64::encode($self->hash($data, $salt));
+    $b64 =~ s/=+$//g; # remove trailing padding
+    $b64 =~ s/\s+$//g;
+    return $b64;
 }
 
 
@@ -217,6 +206,8 @@ automatically be notified of progress on your bug as I make changes.
 
 http://en.wikipedia.org/wiki/Crypt_%28Unix%29#MD5-based_scheme
 http://httpd.apache.org/docs/2.2/misc/password_encryptions.html
+
+http://insidepro.com/hashes.php?lang=eng
 
 $ openssl speed md5 sha1
 
