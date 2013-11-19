@@ -9,7 +9,7 @@ my $builder = Module::Build->new(
     dist_version_from   => 'lib/Data/Password/Entropy.pm',
     meta_merge          => {
         resources           => {
-            repository => 'http://github.com/alien/ali-public/tree/master/modules/Data-Password-Entropy/',
+            repository => 'https://github.com/alistratov/ali-public/tree/master/modules/Data-Password-Entropy',
         },
     },
     build_requires => {
